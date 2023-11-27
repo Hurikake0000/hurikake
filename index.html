@@ -65,6 +65,11 @@
         </div>
     </div>
 
+    <div class="categories" id="products">
+        <div class="smallcontainer">
+           
+        </div>
+    </div>
 
 
 
@@ -356,23 +361,56 @@
 
 
 
-<!-----Js Toggle Menu---------->
-<script>
-    var MenuItems = document.getElementById("MenuItems");
-    MenuItems.style.maxHeight= "0px"; 
-    function menutoggle(){
-        if(MenuItems.style.maxHeight== "0px")
-           {
-            MenuItems.style.maxHeight= "200px"; 
-           }
-        else{
-             MenuItems.style.maxHeight= "0px"; 
+    <script>
+        var MenuItems = document.getElementById("MenuItems");
+        MenuItems.style.maxHeight= "0px"; 
 
+        function menutoggle() {
+            if(MenuItems.style.maxHeight == "0px") {
+                MenuItems.style.maxHeight= "200px"; 
+            } else {
+                MenuItems.style.maxHeight= "0px"; 
+            }
         }
-    }
-</script>
 
+        // Products 클릭 시 스크롤 처리
+        var productsLink = document.querySelector('nav ul li:nth-child(2) a'); // Products 링크 선택
 
+        productsLink.addEventListener('click', function(event) {
+            event.preventDefault(); 
+            var productsSection = document.getElementById('products'); // Products 섹션 선택
+            smoothScroll(productsSection);
+        });
+
+        //스크롤 함수
+        function smoothScroll(target) {
+            var targetPosition = target.offsetTop;
+            var startPosition = window.pageYOffset;
+            var distance = targetPosition - startPosition;
+            var duration = 800; // 스크롤 지속 시간 
+
+            var start = null;
+            function step(timestamp) {
+                if (!start) start = timestamp;
+                var progress = timestamp - start;
+
+                window.scrollTo(0, easeInOutCubic(progress, startPosition, distance, duration));
+
+                if (progress < duration) {
+                    window.requestAnimationFrame(step);
+                }
+            }
+
+            window.requestAnimationFrame(step);
+        }
+
+        function easeInOutCubic(t, b, c, d) {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t * t + b;
+            t -= 2;
+            return c / 2 * (t * t * t + 2) + b;
+        }
+    </script>
 </body>
 
 </html>
